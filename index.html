@@ -323,6 +323,109 @@
             opacity: 0.6;
         }
 
+        /* Audio button */
+        .audio-btn {
+            position: absolute;
+            top: 12px;
+            left: 12px;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            border: none;
+            background: var(--primary);
+            color: white;
+            font-size: 14px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 2px 8px rgba(196, 30, 58, 0.3);
+            transition: all 0.2s;
+            z-index: 10;
+        }
+
+        .audio-btn:hover {
+            transform: scale(1.15);
+            box-shadow: 0 4px 12px rgba(196, 30, 58, 0.4);
+        }
+
+        .audio-btn:active {
+            transform: scale(0.95);
+        }
+
+        .audio-btn.playing {
+            animation: pulse-audio 1s infinite;
+        }
+
+        @keyframes pulse-audio {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+        }
+
+        /* Audio control bar */
+        .audio-control-bar {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 10px 16px;
+            background: white;
+            border-bottom: 1px solid var(--border);
+            flex-wrap: wrap;
+        }
+
+        .audio-control-bar .ctrl-btn {
+            padding: 6px 12px;
+            border: 1.5px solid var(--primary);
+            border-radius: 8px;
+            background: white;
+            color: var(--primary);
+            font-size: 12px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .audio-control-bar .ctrl-btn:hover,
+        .audio-control-bar .ctrl-btn.active {
+            background: var(--primary);
+            color: white;
+        }
+
+        .audio-control-bar .ctrl-btn.playing {
+            background: var(--primary-dark);
+            color: white;
+            border-color: var(--primary-dark);
+        }
+
+        .speed-group {
+            display: flex;
+            gap: 4px;
+            margin-left: auto;
+            align-items: center;
+        }
+
+        .speed-group label {
+            font-size: 11px;
+            color: var(--text-muted);
+            font-weight: 500;
+        }
+
+        .speed-group .spd-btn {
+            padding: 4px 8px;
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            background: white;
+            font-size: 11px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .speed-group .spd-btn.active {
+            background: var(--primary);
+            color: white;
+            border-color: var(--primary);
+        }
+
         /* Sentence card styles */
         .sentence-card .card-front {
             padding: 20px 24px;
@@ -622,6 +725,17 @@
         </div>
     </div>
 
+    <div class="audio-control-bar" id="audioBar">
+        <button class="ctrl-btn" id="playAllBtn" onclick="playAll()">🔊 Ouvir Tudo</button>
+        <button class="ctrl-btn" id="stopBtn" onclick="stopAll()" style="display:none">⏹ Parar</button>
+        <div class="speed-group">
+            <label>Velocidade:</label>
+            <button class="spd-btn" onclick="setSpeed(0.5,this)">🐢</button>
+            <button class="spd-btn active" onclick="setSpeed(0.8,this)">Normal</button>
+            <button class="spd-btn" onclick="setSpeed(1.2,this)">🚀</button>
+        </div>
+    </div>
+
     <main class="content" id="content"></main>
 
     <button class="scroll-top" id="scrollTop" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑</button>
@@ -639,15 +753,81 @@
         let currentCategory = 'all';
         let flippedCards = new Set();
         let deferredPrompt = null;
+        let speechRate = 0.8;
+        let playAllState = null; // { items, idx, stopped }
 
         // Categories
         const categories = [
+            "Números", "Dias da Semana", "Meses", "Cores", "Cumprimentos",
             "Cafeteria/Restaurante", "Supermercado", "Transporte", "Pedir direções",
             "Hospital", "Banco", "Aluguel", "Entrevista/Trabalho", "Telefone",
             "Shopping", "Hotel", "Delivery", "Barbearia", "Academia",
             "Encontro com amigos", "Apresentação pessoal", "Clima", "Marcar refeição",
             "Reclamação/Troca", "Emergência"
         ];
+
+        // ======== AUDIO / TTS ========
+        function speakChinese(text, callback) {
+            if (!window.speechSynthesis) { alert('Seu navegador não suporta síntese de voz.'); return; }
+            window.speechSynthesis.cancel();
+            const u = new SpeechSynthesisUtterance(text);
+            u.lang = 'zh-CN';
+            u.rate = speechRate;
+            if (callback) u.onend = callback;
+            window.speechSynthesis.speak(u);
+        }
+
+        function playWord(event, text) {
+            event.stopPropagation();
+            speakChinese(text);
+        }
+
+        function setSpeed(rate, btn) {
+            speechRate = rate;
+            document.querySelectorAll('.spd-btn').forEach(b => b.classList.remove('active'));
+            if (btn) btn.classList.add('active');
+        }
+
+        function playAll() {
+            if (!window.speechSynthesis) { alert('Navegador não suporta voz.'); return; }
+            let items = [];
+            if (currentTab === 'vocab') {
+                items = currentCategory === 'all' ? vocabularyData : vocabularyData.filter(i => i.category === currentCategory);
+            } else if (currentTab === 'sentences') {
+                items = currentCategory === 'all' ? sentencesData : sentencesData.filter(i => i.category === currentCategory);
+            } else {
+                // For dialogues, flatten all lines
+                let dialogues = currentCategory === 'all' ? dialoguesData : dialoguesData.filter(i => i.category === currentCategory);
+                dialogues.forEach(d => d.lines.forEach(l => items.push({ chinese: l.chinese })));
+            }
+            if (!items.length) return;
+            playAllState = { items, idx: 0, stopped: false };
+            document.getElementById('playAllBtn').style.display = 'none';
+            document.getElementById('stopBtn').style.display = 'inline-block';
+            playNext();
+        }
+
+        function playNext() {
+            if (!playAllState || playAllState.stopped || playAllState.idx >= playAllState.items.length) {
+                stopAll();
+                return;
+            }
+            const item = playAllState.items[playAllState.idx];
+            const text = item.chinese || item.example_cn || '';
+            speakChinese(text, () => {
+                if (!playAllState || playAllState.stopped) return;
+                playAllState.idx++;
+                setTimeout(playNext, 300);
+            });
+        }
+
+        function stopAll() {
+            window.speechSynthesis.cancel();
+            if (playAllState) playAllState.stopped = true;
+            playAllState = null;
+            document.getElementById('playAllBtn').style.display = 'inline-block';
+            document.getElementById('stopBtn').style.display = 'none';
+        }
 
         // Initialize
         document.addEventListener('DOMContentLoaded', () => {
@@ -723,6 +903,7 @@
                     <div class="card ${isFlipped ? 'flipped' : ''}" onclick="flipCard('vocab-${item.id}', this)">
                         <div class="card-inner">
                             <div class="card-front">
+                                <button class="audio-btn" onclick="playWord(event,'${item.chinese}')" title="Ouvir pronúncia">🔊</button>
                                 <span class="card-category-badge">${item.category}</span>
                                 <div class="card-chinese">${item.chinese}</div>
                                 <div class="card-pinyin">${item.pinyin}</div>
@@ -735,6 +916,7 @@
                                     <div class="py">${item.example_pinyin}</div>
                                     <div>${item.example_pt}</div>
                                 </div>
+                                <button class="audio-btn" onclick="playWord(event,'${item.example_cn}')" title="Ouvir exemplo">🔊</button>
                             </div>
                         </div>
                     </div>
@@ -759,10 +941,12 @@
             let html = '<div class="card-grid">';
             data.forEach(item => {
                 const isFlipped = flippedCards.has(`sent-${item.id}`);
+                const escapedCn = item.chinese.replace(/'/g, "\\'");
                 html += `
                     <div class="card sentence-card ${isFlipped ? 'flipped' : ''}" onclick="flipCard('sent-${item.id}', this)">
                         <div class="card-inner">
                             <div class="card-front">
+                                <button class="audio-btn" onclick="playWord(event,'${escapedCn}')" title="Ouvir pronúncia">🔊</button>
                                 <span class="card-category-badge">${item.category}</span>
                                 <div class="card-chinese">${item.chinese}</div>
                                 <div class="card-pinyin">${item.pinyin}</div>
@@ -806,11 +990,12 @@
                                         speakers[line.speaker] = speakerIndex++;
                                     }
                                     const speakerClass = speakers[line.speaker] % 2 === 0 ? '' : 'speaker-b';
+                                    const escapedLine = line.chinese.replace(/'/g, "\\'");
                                     return `
                                         <div class="dialogue-line">
                                             <span class="dialogue-speaker ${speakerClass}">${line.speaker}</span>
                                             <div class="dialogue-text">
-                                                <div class="cn">${line.chinese}</div>
+                                                <div class="cn">${line.chinese} <span style="cursor:pointer;font-size:14px;" onclick="playWord(event,'${escapedLine}')" title="Ouvir">🔊</span></div>
                                                 <div class="py">${line.pinyin}</div>
                                                 <div class="pt">${line.portuguese}</div>
                                             </div>

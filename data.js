@@ -1,7 +1,66 @@
 // LMC Chinese - Data File
-// 100 vocabulário + 60 frases + 20 diálogos
+// Vocabulário básico + cenários práticos + frases + diálogos
 
 const vocabularyData = [
+  // ===== BÁSICO: Números =====
+  { id: 1001, chinese: "一", pinyin: "yī", portuguese: "um (1)", example_cn: "一杯咖啡。", example_pinyin: "Yī bēi kāfēi.", example_pt: "Um café.", category: "Números" },
+  { id: 1002, chinese: "二", pinyin: "èr", portuguese: "dois (2)", example_cn: "两个人。", example_pinyin: "Liǎng gè rén.", example_pt: "Duas pessoas.", category: "Números" },
+  { id: 1003, chinese: "三", pinyin: "sān", portuguese: "três (3)", example_cn: "三块钱。", example_pinyin: "Sān kuài qián.", example_pt: "Três yuans.", category: "Números" },
+  { id: 1004, chinese: "四", pinyin: "sì", portuguese: "quatro (4)", example_cn: "四个小时。", example_pinyin: "Sì gè xiǎoshí.", example_pt: "Quatro horas.", category: "Números" },
+  { id: 1005, chinese: "五", pinyin: "wǔ", portuguese: "cinco (5)", example_cn: "五分钟。", example_pinyin: "Wǔ fēnzhōng.", example_pt: "Cinco minutos.", category: "Números" },
+  { id: 1006, chinese: "六", pinyin: "liù", portuguese: "seis (6)", example_cn: "六月。", example_pinyin: "Liù yuè.", example_pt: "Junho.", category: "Números" },
+  { id: 1007, chinese: "七", pinyin: "qī", portuguese: "sete (7)", example_cn: "七点钟。", example_pinyin: "Qī diǎn zhōng.", example_pt: "Sete horas.", category: "Números" },
+  { id: 1008, chinese: "八", pinyin: "bā", portuguese: "oito (8)", example_cn: "八百块。", example_pinyin: "Bā bǎi kuài.", example_pt: "Oitocentos yuans.", category: "Números" },
+  { id: 1009, chinese: "九", pinyin: "jiǔ", portuguese: "nove (9)", example_cn: "九月九号。", example_pinyin: "Jiǔ yuè jiǔ hào.", example_pt: "Nove de setembro.", category: "Números" },
+  { id: 1010, chinese: "十", pinyin: "shí", portuguese: "dez (10)", example_cn: "十块钱。", example_pinyin: "Shí kuài qián.", example_pt: "Dez yuans.", category: "Números" },
+  { id: 1011, chinese: "零", pinyin: "líng", portuguese: "zero (0)", example_cn: "零度。", example_pinyin: "Líng dù.", example_pt: "Zero graus.", category: "Números" },
+  { id: 1012, chinese: "百", pinyin: "bǎi", portuguese: "cem (100)", example_cn: "一百块。", example_pinyin: "Yī bǎi kuài.", example_pt: "Cem yuans.", category: "Números" },
+  { id: 1013, chinese: "千", pinyin: "qiān", portuguese: "mil (1000)", example_cn: "两千块。", example_pinyin: "Liǎng qiān kuài.", example_pt: "Dois mil yuans.", category: "Números" },
+  { id: 1014, chinese: "万", pinyin: "wàn", portuguese: "dez mil (10.000)", example_cn: "一万块。", example_pinyin: "Yī wàn kuài.", example_pt: "Dez mil yuans.", category: "Números" },
+  // ===== BÁSICO: Dias da Semana =====
+  { id: 1020, chinese: "星期一", pinyin: "xīngqī yī", portuguese: "segunda-feira", example_cn: "星期一上班。", example_pinyin: "Xīngqī yī shàngbān.", example_pt: "Trabalho na segunda.", category: "Dias da Semana" },
+  { id: 1021, chinese: "星期二", pinyin: "xīngqī èr", portuguese: "terça-feira", example_cn: "星期二开会。", example_pinyin: "Xīngqī èr kāihuì.", example_pt: "Reunião na terça.", category: "Dias da Semana" },
+  { id: 1022, chinese: "星期三", pinyin: "xīngqī sān", portuguese: "quarta-feira", example_cn: "星期三有课。", example_pinyin: "Xīngqī sān yǒu kè.", example_pt: "Tenho aula na quarta.", category: "Dias da Semana" },
+  { id: 1023, chinese: "星期四", pinyin: "xīngqī sì", portuguese: "quinta-feira", example_cn: "星期四休息。", example_pinyin: "Xīngqī sì xiūxi.", example_pt: "Descanso na quinta.", category: "Dias da Semana" },
+  { id: 1024, chinese: "星期五", pinyin: "xīngqī wǔ", portuguese: "sexta-feira", example_cn: "星期五聚会。", example_pinyin: "Xīngqī wǔ jùhuì.", example_pt: "Encontro na sexta.", category: "Dias da Semana" },
+  { id: 1025, chinese: "星期六", pinyin: "xīngqī liù", portuguese: "sábado", example_cn: "星期六去超市。", example_pinyin: "Xīngqī liù qù chāoshì.", example_pt: "Vou ao supermercado no sábado.", category: "Dias da Semana" },
+  { id: 1026, chinese: "星期天", pinyin: "xīngqī tiān", portuguese: "domingo", example_cn: "星期天不上班。", example_pinyin: "Xīngqī tiān bù shàngbān.", example_pt: "Não trabalho no domingo.", category: "Dias da Semana" },
+  // ===== BÁSICO: Meses =====
+  { id: 1030, chinese: "一月", pinyin: "yī yuè", portuguese: "janeiro", example_cn: "一月很冷。", example_pinyin: "Yī yuè hěn lěng.", example_pt: "Janeiro é frio.", category: "Meses" },
+  { id: 1031, chinese: "二月", pinyin: "èr yuè", portuguese: "fevereiro", example_cn: "二月过年。", example_pinyin: "Èr yuè guònián.", example_pt: "Ano novo chinês em fevereiro.", category: "Meses" },
+  { id: 1032, chinese: "三月", pinyin: "sān yuè", portuguese: "março", example_cn: "三月开始暖和了。", example_pinyin: "Sān yuè kāishǐ nuǎnhuo le.", example_pt: "Março começa a ficar quente.", category: "Meses" },
+  { id: 1033, chinese: "四月", pinyin: "sì yuè", portuguese: "abril", example_cn: "四月花很多。", example_pinyin: "Sì yuè huā hěn duō.", example_pt: "Muitas flores em abril.", category: "Meses" },
+  { id: 1034, chinese: "五月", pinyin: "wǔ yuè", portuguese: "maio", example_cn: "五月有假期。", example_pinyin: "Wǔ yuè yǒu jiàqī.", example_pt: "Maio tem feriado.", category: "Meses" },
+  { id: 1035, chinese: "六月", pinyin: "liù yuè", portuguese: "junho", example_cn: "六月开始热了。", example_pinyin: "Liù yuè kāishǐ rè le.", example_pt: "Junho começa a esquentar.", category: "Meses" },
+  { id: 1036, chinese: "七月", pinyin: "qī yuè", portuguese: "julho", example_cn: "七月放暑假。", example_pinyin: "Qī yuè fàng shǔjià.", example_pt: "Férias de verão em julho.", category: "Meses" },
+  { id: 1037, chinese: "八月", pinyin: "bā yuè", portuguese: "agosto", example_cn: "八月最热。", example_pinyin: "Bā yuè zuì rè.", example_pt: "Agosto é o mais quente.", category: "Meses" },
+  { id: 1038, chinese: "九月", pinyin: "jiǔ yuè", portuguese: "setembro", example_cn: "九月开学。", example_pinyin: "Jiǔ yuè kāixué.", example_pt: "Aulas começam em setembro.", category: "Meses" },
+  { id: 1039, chinese: "十月", pinyin: "shí yuè", portuguese: "outubro", example_cn: "十月国庆节。", example_pinyin: "Shí yuè Guóqìng jié.", example_pt: "Feriado nacional em outubro.", category: "Meses" },
+  { id: 1040, chinese: "十一月", pinyin: "shíyī yuè", portuguese: "novembro", example_cn: "十一月变冷了。", example_pinyin: "Shíyī yuè biàn lěng le.", example_pt: "Novembro fica frio.", category: "Meses" },
+  { id: 1041, chinese: "十二月", pinyin: "shí'èr yuè", portuguese: "dezembro", example_cn: "十二月下雪。", example_pinyin: "Shí'èr yuè xià xuě.", example_pt: "Neva em dezembro.", category: "Meses" },
+  // ===== BÁSICO: Cores =====
+  { id: 1050, chinese: "红色", pinyin: "hóngsè", portuguese: "vermelho", example_cn: "红色很好看。", example_pinyin: "Hóngsè hěn hǎokàn.", example_pt: "Vermelho é bonito.", category: "Cores" },
+  { id: 1051, chinese: "蓝色", pinyin: "lánsè", portuguese: "azul", example_cn: "天是蓝色的。", example_pinyin: "Tiān shì lánsè de.", example_pt: "O céu é azul.", category: "Cores" },
+  { id: 1052, chinese: "绿色", pinyin: "lǜsè", portuguese: "verde", example_cn: "绿色代表自然。", example_pinyin: "Lǜsè dàibiǎo zìrán.", example_pt: "Verde representa a natureza.", category: "Cores" },
+  { id: 1053, chinese: "黄色", pinyin: "huángsè", portuguese: "amarelo", example_cn: "黄色的花。", example_pinyin: "Huángsè de huā.", example_pt: "Flor amarela.", category: "Cores" },
+  { id: 1054, chinese: "白色", pinyin: "báisè", portuguese: "branco", example_cn: "白色的墙。", example_pinyin: "Báisè de qiáng.", example_pt: "Parede branca.", category: "Cores" },
+  { id: 1055, chinese: "黑色", pinyin: "hēisè", portuguese: "preto", example_cn: "黑色的车。", example_pinyin: "Hēisè de chē.", example_pt: "Carro preto.", category: "Cores" },
+  { id: 1056, chinese: "橙色", pinyin: "chéngsè", portuguese: "laranja", example_cn: "橙色的橘子。", example_pinyin: "Chéngsè de júzi.", example_pt: "Laranja (cor) da tangerina.", category: "Cores" },
+  { id: 1057, chinese: "紫色", pinyin: "zǐsè", portuguese: "roxo", example_cn: "紫色的裙子。", example_pinyin: "Zǐsè de qúnzi.", example_pt: "Saia roxa.", category: "Cores" },
+  { id: 1058, chinese: "粉色", pinyin: "fěnsè", portuguese: "rosa", example_cn: "粉色的书包。", example_pinyin: "Fěnsè de shūbāo.", example_pt: "Mochila rosa.", category: "Cores" },
+  { id: 1059, chinese: "灰色", pinyin: "huīsè", portuguese: "cinza", example_cn: "灰色的天空。", example_pinyin: "Huīsè de tiānkōng.", example_pt: "Céu cinza.", category: "Cores" },
+  // ===== BÁSICO: Tempo / Cumprimentos =====
+  { id: 1060, chinese: "早上好", pinyin: "zǎoshang hǎo", portuguese: "bom dia", example_cn: "早上好！今天天气不错。", example_pinyin: "Zǎoshang hǎo! Jīntiān tiānqì búcuò.", example_pt: "Bom dia! O tempo está bom hoje.", category: "Cumprimentos" },
+  { id: 1061, chinese: "下午好", pinyin: "xiàwǔ hǎo", portuguese: "boa tarde", example_cn: "下午好，请坐。", example_pinyin: "Xiàwǔ hǎo, qǐng zuò.", example_pt: "Boa tarde, por favor sente-se.", category: "Cumprimentos" },
+  { id: 1062, chinese: "晚上好", pinyin: "wǎnshang hǎo", portuguese: "boa noite", example_cn: "晚上好！吃饭了吗？", example_pinyin: "Wǎnshang hǎo! Chīfàn le ma?", example_pt: "Boa noite! Já comeu?", category: "Cumprimentos" },
+  { id: 1063, chinese: "你好", pinyin: "nǐ hǎo", portuguese: "olá", example_cn: "你好，很高兴认识你。", example_pinyin: "Nǐ hǎo, hěn gāoxìng rènshi nǐ.", example_pt: "Olá, prazer em te conhecer.", category: "Cumprimentos" },
+  { id: 1064, chinese: "再见", pinyin: "zàijiàn", portuguese: "tchau/até logo", example_cn: "再见，明天见！", example_pinyin: "Zàijiàn, míngtiān jiàn!", example_pt: "Tchau, até amanhã!", category: "Cumprimentos" },
+  { id: 1065, chinese: "谢谢", pinyin: "xièxie", portuguese: "obrigado(a)", example_cn: "谢谢你的帮助。", example_pinyin: "Xièxie nǐ de bāngzhù.", example_pt: "Obrigado pela ajuda.", category: "Cumprimentos" },
+  { id: 1066, chinese: "不客气", pinyin: "bú kèqi", portuguese: "de nada", example_cn: "不客气，应该的。", example_pinyin: "Bú kèqi, yīnggāi de.", example_pt: "De nada, é o mínimo.", category: "Cumprimentos" },
+  { id: 1067, chinese: "对不起", pinyin: "duìbuqǐ", portuguese: "desculpe", example_cn: "对不起，我迟到了。", example_pinyin: "Duìbuqǐ, wǒ chídào le.", example_pt: "Desculpe, cheguei atrasado.", category: "Cumprimentos" },
+  { id: 1068, chinese: "没关系", pinyin: "méi guānxi", portuguese: "tudo bem/não tem problema", example_cn: "没关系，别担心。", example_pinyin: "Méi guānxi, bié dānxīn.", example_pt: "Tudo bem, não se preocupe.", category: "Cumprimentos" },
+  { id: 1069, chinese: "请", pinyin: "qǐng", portuguese: "por favor", example_cn: "请帮我一下。", example_pinyin: "Qǐng bāng wǒ yīxià.", example_pt: "Por favor, me ajude.", category: "Cumprimentos" },
+  // ===== Cenários Práticos (original) =====
   // 1. Cafeteria/Restaurante
   { id: 1, chinese: "咖啡", pinyin: "kāfēi", portuguese: "café", example_cn: "我要一杯咖啡。", example_pinyin: "Wǒ yào yī bēi kāfēi.", example_pt: "Eu quero um café.", category: "Cafeteria/Restaurante" },
   { id: 2, chinese: "菜单", pinyin: "càidān", portuguese: "cardápio", example_cn: "请给我菜单。", example_pinyin: "Qǐng gěi wǒ càidān.", example_pt: "Por favor, me dê o cardápio.", category: "Cafeteria/Restaurante" },
